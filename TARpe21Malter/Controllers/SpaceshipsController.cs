@@ -36,7 +36,7 @@ namespace TARpe21ShopMalter.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(SpaceshipEditViewModel vm)
         {
-            var dto = new TARpe21Malter.Core.Dto.SpaceshipDto()
+            var dto = new TARpe21ShopMalter.Core.Dto.SpaceshipDto()
             {
                 Id = vm.Id,
                 Name = vm.Name,

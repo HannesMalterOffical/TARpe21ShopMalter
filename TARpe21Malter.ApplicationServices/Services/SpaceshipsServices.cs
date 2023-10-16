@@ -1,74 +1,88 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TARpe21ShopMalter.Core.Domain.Spaceship;
+using TARpe21ShopMalter.Core.Dto;
+using TARpe21ShopMalter.Core.ServiceInterface;
+using TARpe21ShopMalter.Core.Domain.Spaceship;
+using TARpe21ShopMalter.Core.Dto;
 using TARpe21ShopMalter.Core.ServiceInterface;
 using TARpe21ShopMalter.Data;
-using TARpe21ShopMalter.Models.Spaceship;
-using System.Web.Mvc;
 
-namespace TARpe21ShopMalter.Controllers
+namespace TARpe21ShopMalter.ApplicationServices.Services
 {
-    public class SpaceshipsController : Controller
+    public class SpaceshipsServices : ISpaceshipsServices
     {
         private readonly TARpe21ShopMalterContext _context;
-        private readonly ISpaceshipsServices _spaceshipsServices;
-        public SpaceshipsController
-            (
-            TARpe21ShopMalterContext context,
-            ISpaceshipsServices spaceshipsServices
-            )
+        public SpaceshipsServices(TARpe21ShopMalterContext context)
         {
             _context = context;
-            _spaceshipsServices = spaceshipsServices;
         }
-        public IActionResult Index()
+
+        public async Task<Spaceship> Add(SpaceshipDto dto)
         {
-            var result = _context.Spaceships
-                .OrderBy(x => x.CreatedAt)
-                .Select(x => new SpaceshipIndexViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Type = x.Type,
-                    PassengerCount = x.PassengerCount,
-                    EnginePower = x.EnginePower,
-                });
-            return View(result);
-        }
-        [HttpGet]
-        public IActionResult Add()
-        {
-            return View("Edit");
-        }
-        [HttpPost]
-        public async Task<IActionResult> Add(SpaceshipEditViewModel vm)
-        {
-            var dto = new TARpe21Malter.Core.Dto.SpaceshipDto()
+            var domain = new Spaceship()
             {
-                Id = vm.Id,
-                Name = vm.Name,
-                Description = vm.Description,
-                PassengerCount = vm.PassengerCount,
-                CrewCount = vm.CrewCount,
-                CargoWeight = vm.CargoWeight,
-                MaxSpeedInVaccuum = vm.MaxSpeedInVaccuum,
-                BuiltAtDate = vm.BuiltAtDate,
-                MaidenLaunch = vm.MaidenLaunch,
-                Manufacturer = vm.Manufacturer,
-                IsSpaceshipPreviouslyOwned = vm.IsSpaceshipPreviouslyOwned,
-                FullTripsCount = vm.FullTripsCount,
-                Type = vm.Type,
-                EnginePower = vm.EnginePower,
-                FuelConsumptionPerDay = vm.FuelConsumptionPerDay,
-                MaintenanceCount = vm.MaintenanceCount,
-                LastMaintenance = vm.LastMaintenance,
-                CreatedAt = vm.CreatedAt,
-                ModifiedAt = vm.ModifiedAt
+                Name = dto.Name,
+                Description = dto.Description,
+                //Dimensions = dto.Dimensions,
+                PassengerCount = dto.PassengerCount,
+                CrewCount = dto.CrewCount,
+                CargoWeight = dto.CargoWeight,
+                MaxSpeedInVaccuum = dto.MaxSpeedInVaccuum,
+                BuiltAtDate = dto.BuiltAtDate,
+                MaidenLaunch = dto.MaidenLaunch,
+                Manufacturer = dto.Manufacturer,
+                IsSpaceshipPreviouslyOwned = dto.IsSpaceshipPreviouslyOwned,
+                FullTripsCount = dto.FullTripsCount,
+                Type = dto.Type,
+                EnginePower = dto.EnginePower,
+                FuelConsumptionPerDay = dto.FuelConsumptionPerDay,
+                MaintenanceCount = dto.MaintenanceCount,
+                LastMaintenance = dto.LastMaintenance,
+                CreatedAt = dto.CreatedAt,
+                ModifiedAt = dto.ModifiedAt,
             };
-            var result = await _spaceshipsServices.Add(dto);
-            if (result == null)
+            await _context.Spaceships.AddAsync(domain);
+            await _context.SaveChangesAsync();
+            return domain;
+        }
+        public async Task<Spaceship> Update(SpaceshipDto dto)
+        {
+            var domain = new Spaceship()
             {
-                return RedirectToAction(nameof(Index));
-            }
-            return RedirectToAction(nameof(Index), vm);
+                Name = dto.Name,
+                Description = dto.Description,
+                //Dimensions = dto.Dimensions,
+                PassengerCount = dto.PassengerCount,
+                CrewCount = dto.CrewCount,
+                CargoWeight = dto.CargoWeight,
+                MaxSpeedInVaccuum = dto.MaxSpeedInVaccuum,
+                BuiltAtDate = dto.BuiltAtDate,
+                MaidenLaunch = dto.MaidenLaunch,
+                Manufacturer = dto.Manufacturer,
+                IsSpaceshipPreviouslyOwned = dto.IsSpaceshipPreviouslyOwned,
+                FullTripsCount = dto.FullTripsCount,
+                Type = dto.Type,
+                EnginePower = dto.EnginePower,
+                FuelConsumptionPerDay = dto.FuelConsumptionPerDay,
+                MaintenanceCount = dto.MaintenanceCount,
+                LastMaintenance = dto.LastMaintenance,
+                CreatedAt = dto.CreatedAt,
+                ModifiedAt = DateTime.Now,
+            };
+            _context.Spaceships.Update(domain);
+            await _context.SaveChangesAsync();
+            return domain;
+        }
+        public async Task<Spaceship> GetUpdate(Guid id)
+        {
+            var result = await _context.Spaceships
+                .FirstOrDefaultAsync(x => x.Id == id);
+            return result;
         }
     }
 }
