@@ -12,6 +12,6 @@ namespace TARpe21ShopMalter.Data
     {
         public TARpe21ShopMalterContext(DbContextOptions<TARpe21ShopMalterContext> options) : base(options) { }
 
-        public DbSet<Spaceship> spaceships { get; set; }
+        public DbSet<Spaceship> Spaceships { get; set; }
     }
 }
