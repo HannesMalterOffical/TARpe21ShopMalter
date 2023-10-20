@@ -2,8 +2,9 @@
 
 namespace TARpe21ShopMalter.Models.Spaceship
 {
-    public class SpaceshipEditViewModel
+    public class SpaceshipDetailsViewModel
     {
+        [Key]
         public Guid? Id { get; set; } // globally unique identifier
         public string Name { get; set; } // ship name
         public string Description { get; set; } // ship description

@@ -1,14 +1,7 @@
 ﻿@model TARpe21ShopMalter.Models.Spaceship.SpaceshipEditViewModel
 <h1>Add</h1>
 
-@if (Model != null)
-{
-    <h1>Update</h1>
-}
-else
-{
-    <h1>Add</h1>
-}
+
 
 <div>
     <form method="post" enctype="multipart/form-data">
@@ -115,5 +108,15 @@ else
         <input asp-action="add" asp-controller="spaceships" type="submit" class="btn btn-primary" value="Add"/>
         <a asp-action="edit" asp-controller="spaceships" class="btn btn-primary">Edit</a>
         <input asp-action="Update" asp-controller="spaceships" type="submit" class="btn btn-primary" value="Update"/>
+
+        @if (Model != null)
+        {
+            <h1>Update</h1>
+        }
+        else
+        {
+            <h1>Add</h1>
+        }
+
     </form>
 </div>
