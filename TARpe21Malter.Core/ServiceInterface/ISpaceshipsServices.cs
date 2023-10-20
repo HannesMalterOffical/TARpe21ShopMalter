@@ -12,8 +12,8 @@ namespace TARpe21ShopMalter.Core.ServiceInterface
     {
         Task<Spaceship> Add(SpaceshipDto dto);
         Task<Spaceship> GetUpdate(Guid id);
-
         Task<Spaceship> Update(SpaceshipDto dto);
         Task<Spaceship> Delete(Guid Id);
+        Task<Spaceship> GetAsync(Guid Id);
     }
 }
