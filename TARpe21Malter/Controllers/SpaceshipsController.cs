@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TARpe21ShopMalter.Core.Dto;
 using TARpe21ShopMalter.Core.ServiceInterface;
 using TARpe21ShopMalter.Data;
 using TARpe21ShopMalter.Models.Spaceship;
@@ -9,7 +10,11 @@ namespace TARpe21ShopMalter.Controllers
     {
         private readonly TARpe21ShopMalterContext _context;
         private readonly ISpaceshipsServices _spaceshipsServices;
-        public SpaceshipsController(TARpe21ShopMalterContext context, ISpaceshipsServices spaceshipsServices)
+        public SpaceshipsController
+            (
+            TARpe21ShopMalterContext context,
+            ISpaceshipsServices spaceshipsServices
+            )
         {
             _context = context;
             _spaceshipsServices = spaceshipsServices;
@@ -36,7 +41,7 @@ namespace TARpe21ShopMalter.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(SpaceshipEditViewModel vm)
         {
-            var dto = new TARpe21ShopMalter.Core.Dto.SpaceshipDto()
+            var dto = new SpaceshipDto()
             {
                 Id = vm.Id,
                 Name = vm.Name,
@@ -59,6 +64,70 @@ namespace TARpe21ShopMalter.Controllers
                 ModifiedAt = vm.ModifiedAt
             };
             var result = await _spaceshipsServices.Add(dto);
+            if (result == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index), vm);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var spaceship = await _spaceshipsServices.GetUpdate(id);
+            if (spaceship == null)
+            {
+                return NotFound();
+            }
+            var vm = new SpaceshipEditViewModel()
+            {
+                Id = spaceship.Id,
+                Name = spaceship.Name,
+                Description = spaceship.Description,
+                PassengerCount = spaceship.PassengerCount,
+                CrewCount = spaceship.CrewCount,
+                CargoWeight = spaceship.CargoWeight,
+                MaxSpeedInVaccuum = spaceship.MaxSpeedInVaccuum,
+                BuiltAtDate = spaceship.BuiltAtDate,
+                MaidenLaunch = spaceship.MaidenLaunch,
+                Manufacturer = spaceship.Manufacturer,
+                IsSpaceshipPreviouslyOwned = spaceship.IsSpaceshipPreviouslyOwned,
+                FullTripsCount = spaceship.FullTripsCount,
+                Type = spaceship.Type,
+                EnginePower = spaceship.EnginePower,
+                FuelConsumptionPerDay = spaceship.FuelConsumptionPerDay,
+                MaintenanceCount = spaceship.MaintenanceCount,
+                LastMaintenance = spaceship.LastMaintenance,
+                CreatedAt = spaceship.CreatedAt,
+                ModifiedAt = spaceship.ModifiedAt
+            };
+            return View(vm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(SpaceshipEditViewModel vm)
+        {
+            var dto = new SpaceshipDto()
+            {
+                Id = vm.Id,
+                Name = vm.Name,
+                Description = vm.Description,
+                PassengerCount = vm.PassengerCount,
+                CrewCount = vm.CrewCount,
+                CargoWeight = vm.CargoWeight,
+                MaxSpeedInVaccuum = vm.MaxSpeedInVaccuum,
+                BuiltAtDate = vm.BuiltAtDate,
+                MaidenLaunch = vm.MaidenLaunch,
+                Manufacturer = vm.Manufacturer,
+                IsSpaceshipPreviouslyOwned = vm.IsSpaceshipPreviouslyOwned,
+                FullTripsCount = vm.FullTripsCount,
+                Type = vm.Type,
+                EnginePower = vm.EnginePower,
+                FuelConsumptionPerDay = vm.FuelConsumptionPerDay,
+                MaintenanceCount = vm.MaintenanceCount,
+                LastMaintenance = vm.LastMaintenance,
+                CreatedAt = vm.CreatedAt,
+                ModifiedAt = vm.ModifiedAt
+            };
+            var result = await _spaceshipsServices.Update(dto);
             if (result == null)
             {
                 return RedirectToAction(nameof(Index));
