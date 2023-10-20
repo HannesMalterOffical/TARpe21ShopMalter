@@ -14,7 +14,7 @@ namespace TARpe21ShopMalter.ApplicationServices.Services
             _context = context;
         }
 
-        public async Task<Spaceship> Add(SpaceshipDto dto)
+        public async Task<Spaceship> Create(SpaceshipDto dto)
         {
             var domain = new Spaceship()
             {
@@ -70,12 +70,13 @@ namespace TARpe21ShopMalter.ApplicationServices.Services
             await _context.SaveChangesAsync();
             return domain;
         }
-        public async Task<Spaceship> GetUpdate(Guid id)
-        {
-            var result = await _context.Spaceships
-                .FirstOrDefaultAsync(x => x.Id == id);
-            return result;
-        }
+        //public async Task<Spaceship> GetUpdate(Guid id)
+        //{
+        //    var result = await _context.Spaceships
+        //        .FirstOrDefaultAsync(x => x.Id == id);
+        //    return result;
+        //}
+
         public async Task<Spaceship> Delete(Guid Id)
         {
             var spaceshipId = await _context.Spaceships
@@ -86,6 +87,7 @@ namespace TARpe21ShopMalter.ApplicationServices.Services
 
             return spaceshipId;
         }
+
         public async Task<Spaceship> GetAsync(Guid Id)
         {
             var result = await _context.Spaceships

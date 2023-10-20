@@ -63,7 +63,7 @@ namespace TARpe21ShopMalter.Controllers
                 CreatedAt = vm.CreatedAt,
                 ModifiedAt = vm.ModifiedAt
             };
-            var result = await _spaceshipsServices.Add(dto);
+            var result = await _spaceshipsServices.Create(dto);
             if (result == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -127,7 +127,7 @@ namespace TARpe21ShopMalter.Controllers
                 CreatedAt = vm.CreatedAt,
                 ModifiedAt = vm.ModifiedAt
             };
-            var result = await _spaceshipsServices.Update(dto);
+            var result = await _spaceshipsServices.GetUpdate(dto);
             if (result == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -187,7 +187,7 @@ namespace TARpe21ShopMalter.Controllers
             {
                 return NotFound();
             }
-            var vm = new SpaceshipDetailsViewModel()
+            var vm = new SpaceshipDeleteViewModel()
             {
                 Id = spaceship.Id,
                 Name = spaceship.Name,
