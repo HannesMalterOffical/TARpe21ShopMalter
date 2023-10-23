@@ -20,6 +20,8 @@
         public int FuelConsumptionPerDay { get; set; } // fuel consumed in a days worth of space traveled at maximum speed
         public int MaintenanceCount { get; set; } // how many maintenance sessions have been conducted on this ship
         public DateTime LastMaintenance { get; set; } // when was the last maintenance performed
+        public List<IFormFile> Files { get; set; }
+        public IEnumerable<ImageViewModel> Image { get; set; }
 
 
         // only in database

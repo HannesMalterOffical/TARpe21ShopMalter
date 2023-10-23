@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TARpe21ShopMalter.Core.Domain.Spaceship;
+using TARpe21ShopMalter.Core.Dto;
 
 namespace TARpe21ShopMalter.Models.Spaceship
 {
@@ -24,14 +25,12 @@ namespace TARpe21ShopMalter.Models.Spaceship
         public int MaintenanceCount { get; set; } // how many maintenance sessions have been conducted on this ship
         public DateTime LastMaintenance { get; set; } // when was the last maintenance performed
 
+        public List<IFormFile> Files { get; set; } // Files that are to be added to this spaceship
+        public IEnumerable<FileToDatabaseDto> Image { get; set; } = new List<FileToDatabaseDto>(); // images themselves that are added
 
         // only in database
 
         public DateTime CreatedAt { get; set; } // when the entry was created
         public DateTime ModifiedAt { get; set; } // when the entry has been modified last
-
-
-
     }
-
 }
