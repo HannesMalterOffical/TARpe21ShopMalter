@@ -220,5 +220,13 @@ namespace TARpe21ShopMalter.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        public async Task<IActionResult> RemoveImage(ImageViewModel file)
+        {
+            var dto = new FileToDatabaseDto
+            {
+
+            };
+        }
     }
 }
