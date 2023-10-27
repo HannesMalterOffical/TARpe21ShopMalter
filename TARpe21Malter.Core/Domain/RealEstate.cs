@@ -16,6 +16,7 @@ namespace TARpe21ShopMalter.Core.Domain
         public Guid id { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public string Country { get; set; }
         public string County { get; set; }
         public int PostalCode { get; set; }
         public int PhoneNumber { get; set; }
