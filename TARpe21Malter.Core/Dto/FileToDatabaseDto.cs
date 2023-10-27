@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TARpe21ShopMalter.Core.Dto
 {
-    public class FileToDatabaseDto
+    public class FilesToDatabaseDto
     {
         public Guid Id { get; set; }
         public string ImageTitle { get; set; }

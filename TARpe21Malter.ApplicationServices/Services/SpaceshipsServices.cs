@@ -66,9 +66,9 @@ namespace TARpe21ShopMalter.Controllers
                 CreatedAt = vm.CreatedAt,
                 ModifiedAt = vm.ModifiedAt,
                 Files = vm.Files,
-                Image = vm.Image.Select(x => new FileToDatabaseDto
+                Image = vm.Image.Select(x => new FilesToDatabaseDto
                 {
-                    Id = x.Id,
+                    Id = x.ImageId,
                     ImageData = x.ImageData,
                     ImageTitle = x.ImageTitle,
                     SpaceshipId = x.SpaceshipId,

@@ -33,7 +33,7 @@ namespace TARpe21ShopMalter.Core.Dto
         public DateTime LastMaintenance { get; set; } // when was the last maintenance performed
 
         public List<IFormFile> Files { get; set; } // Files that are to be added to this spaceship
-        public IEnumerable<FileToDatabaseDto> Image { get; set; } = new List<FileToDatabaseDto>(); // images themselves that are added
+        public IEnumerable<FilesToDatabaseDto> Image { get; set; } = new List<FilesToDatabaseDto>(); // images themselves that are added
 
         // only in database
 
