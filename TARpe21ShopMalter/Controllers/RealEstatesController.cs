@@ -1,0 +1,87 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using TARpe21ShopMalter.Core.Dto;
+using TARpe21ShopMalter.Core.ServiceInterface;
+using TARpe21ShopMalter.Data;
+using TARpe21ShopMalter.Models.RealEstate;
+using TARpe21ShopMalter.Models.Spaceship;
+
+namespace TARpe21ShopMalter.Controllers
+{
+    public class RealEstatesController : Controller
+    {
+        private readonly IRealEstatesServices _realEstates;
+        private readonly TARpe21ShopMalterContext _context;
+        public RealEstatesController
+            (
+            IRealEstatesServices realEstates,
+            TARpe21ShopMalterContext context
+            )
+        {
+            _realEstates = realEstates;
+            _context = context;
+        }
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var result = _context.RealEstates
+                .OrderByDescending(x => x.CreatedAt)
+                .Select(x => new RealEstateIndexViewModel
+                {
+                    Id = x.Id,
+                    Address = x.Address,
+                    City = x.City,
+                    Country = x.Country,
+                    SquareMeters = x.SquareMeters,
+                    Price = x.Price,
+                    IsPropertySold = x.IsPropertySold,
+                });
+            return View(result);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            RealEstateCreateUpdateViewModel vm = new();
+            return View("CreateUpdate", vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(RealEstateCreateUpdateViewModel vm)
+        {
+            var dto = new RealEstateDto()
+            {
+                Id = Guid.NewGuid(),
+                Address = vm.Address,
+                City = vm.City,
+                Country = vm.Country,
+                County = vm.County,
+                SquareMeters = vm.SquareMeters,
+                Price = vm.Price,
+                PostalCode = vm.PostalCode,
+                PhoneNumber = vm.PhoneNumber,
+                FaxNumber = vm.FaxNumber,
+                ListingDescription = vm.ListingDescription,
+                BuildDate = vm.BuildDate,
+                RoomCount = vm.RoomCount,
+                FloorCount = vm.FloorCount,
+                EstateFloor = vm.EstateFloor,
+                Bathrooms = vm.Bathrooms,
+                Bedrooms = vm.Bedrooms,
+                DoesHaveParkingSpace = vm.DoesHaveParkingSpace,
+                DoesHavePowerGridConnection = vm.DoesHavePowerGridConnection,
+                DoesHaveWaterGridConnection = vm.DoesHaveWaterGridConnection,
+                Type = vm.Type,
+                IsPropertyNewDevelopment = vm.IsPropertyNewDevelopment,
+                IsPropertySold = vm.IsPropertySold,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now,
+            };
+            var result = await _realEstates.Create(dto);
+            if (result == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction("Index", vm);
+        }
+    }
+}
