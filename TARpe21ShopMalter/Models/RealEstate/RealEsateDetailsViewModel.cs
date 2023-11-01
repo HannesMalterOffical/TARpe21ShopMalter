@@ -1,14 +1,8 @@
-﻿using TARpe21ShopMalter.Core.Domain;
-
-namespace TARpe21ShopMalter.Models.RealEstate
+﻿namespace TARpe21ShopMalter.Models.RealEstate
 {
-    public enum EstateType
+    public class RealEsateDetailsViewModel
     {
-        House, Apartment, Room, Land, ParkingSpace, TimeShare, Garage, StorageUnit, Mansion, Castle, Station
-    }
-    public class RealEstateCreateUpdateViewModel
-    {
-        public Guid? Id { get; set; } // unique id
+        public Guid Id { get; set; } // unique id
         public string Address { get; set; } // street name, house number, flat number.  "Tulika 14-6"
         public string? City { get; set; } //city where realestate is, city is optional incase the 
         public string Country { get; set; } //what country estate is in
@@ -36,13 +30,10 @@ namespace TARpe21ShopMalter.Models.RealEstate
 
         public bool IsPropertyNewDevelopment { get; set; } //shows if the estate being sold is a newly developed housing unit, or an older existing one
         public bool IsPropertySold { get; set; } //shows if the property has been sold already 
-        public List<IFormFile> Files { get; set; }
-        public List<FileToDatabase> MyProperty { get; set; }
 
         //database only properties
 
         public DateTime CreatedAt { get; set; } //when entry was added to the database
         public DateTime ModifiedAt { get; set; } //when wwas entry modified in the database
     }
-
 }

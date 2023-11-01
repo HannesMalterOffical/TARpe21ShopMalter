@@ -12,5 +12,6 @@ namespace TARpe21ShopMalter.Core.ServiceInterface
     {
         Task<RealEstate> GetAsync();
         Task<RealEstate> Create(RealEstateDto dto);
+        Task<RealEstate> Update(RealEstateDto dto);
     }
 }

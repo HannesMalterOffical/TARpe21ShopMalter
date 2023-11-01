@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.X509Certificates;
+using TARpe21ShopMalter.Core.Domain;
 using TARpe21ShopMalter.Core.Dto;
 using TARpe21ShopMalter.Core.ServiceInterface;
 using TARpe21ShopMalter.Data;
@@ -82,6 +84,40 @@ namespace TARpe21ShopMalter.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction("Index", vm);
+        }
+        public async Task<IActionResult> Update(RealEstateDto dto)
+        {
+            var domain = new RealEstate()
+            {
+                Id = Guid.NewGuid(),
+                Address = dto.Address,
+                City = dto.City,
+                Country = dto.Country,
+                County = dto.County,
+                SquareMeters = dto.SquareMeters,
+                Price = dto.Price,
+                PostalCode = dto.PostalCode,
+                PhoneNumber = dto.PhoneNumber,
+                FaxNumber = dto.FaxNumber,
+                ListingDescription = dto.ListingDescription,
+                BuildDate = dto.BuildDate,
+                RoomCount = dto.RoomCount,
+                FloorCount = dto.FloorCount,
+                EstateFloor = dto.EstateFloor,
+                Bathrooms = dto.Bathrooms,
+                Bedrooms = dto.Bedrooms,
+                DoesHaveParkingSpace = dto.DoesHaveParkingSpace,
+                DoesHavePowerGridConnection = dto.DoesHavePowerGridConnection,
+                DoesHaveWaterGridConnection = dto.DoesHaveWaterGridConnection,
+                Type = dto.Type,
+                IsPropertyNewDevelopment = dto.IsPropertyNewDevelopment,
+                IsPropertySold = dto.IsPropertySold,
+                CreatedAt = dto.CreatedAt,
+                ModifiedAt = DateTime.Now,
+            };
+            _context.RealEstates.Update(domain);
+            await _context.SaveChangesAsync();
+            return domain;
         }
     }
 }
