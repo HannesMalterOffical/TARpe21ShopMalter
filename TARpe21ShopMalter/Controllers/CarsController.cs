@@ -23,6 +23,7 @@ namespace TARpe21ShopMalter.Controllers
             _filesServices = filesServices;
         }
 
+
         [HttpPost]
         public async Task<IActionResult> RemoveImage(FileToApiViewModel vm)
         {
