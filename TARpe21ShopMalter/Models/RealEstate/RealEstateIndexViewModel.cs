@@ -1,40 +1,40 @@
-﻿namespace TARpe21ShopMalter.Models.RealEstate
+﻿using TARpe21ShopMalter.Core.Domain;
+
+namespace TARpe21ShopMalter.Models.RealEstate
 {
     public class RealEstateIndexViewModel
     {
-        
-        public Guid Id { get; set; } // unique id
-        public string Address { get; set; } // street name, house number, flat number.  "Tulika 14-6"
-        public string? City { get; set; } //city where realestate is, city is optional incase the 
-        public string Country { get; set; } //what country estate is in
-        public string County { get; set; } // county where the realestate is
-        public int PostalCode { get; set; } //postal code for the address
-        public int PhoneNumber { get; set; } //phonenumber to call about the property
-        public int FaxNumber { get; set; } //phonenumber to call about the property
-        public string ListingDescription { get; set; } // Generic description containing anything not reflected by the model
-        public int SquareMeters { get; set; } // How big the property is by square meters
-        public DateTime BuildDate { get; set; } //when was it built
-        public int Price { get; set; } //proce of the estate property
-        public int RoomCount { get; set; } //total room count in the estate
-        public int FloorCount { get; set; } //how many floors does the building have
-        public int? EstateFloor { get; set; } // what floor the flat/apartment is on
-        public int Bathrooms { get; set; } //how many bathrooms are in the estate
-        public int Bedrooms { get; set; } //how many bedrooms are in the estate
-        public bool DoesHaveParkingSpace { get; set; } //does the property come with a parking space
-        public bool DoesHavePowerGridConnection { get; set; } //does the property have connection to the power grid
-        public bool DoesHaveWaterGridConnection { get; set; } //does the property have connection to the water grid
-        public decimal SqMPrice //whats the price for square meter in this property
+        public Guid Id { get; set; }
+        public string Address { get; set; }
+        public string? City { get; set; }
+        public string County { get; set; }
+        public string Country { get; set; }
+        public int PostalCode { get; set; }
+
+        public string PhoneNumber { get; set; }
+        public string FaxNumber { get; set; }
+        public string ListingDescription { get; set; }
+        public int SquareMeters { get; set; }
+        public DateTime BuildDate { get; set; }
+        public int Price { get; set; }
+        public int RoomCount { get; set; }
+        public int? EstateFloor { get; set; }
+        public int FloorCount { get; set; }
+        public int Bathrooms { get; set; }
+        public int Bedrooms { get; set; }
+        public bool hasParkingSpace { get; set; }
+        public bool hasElectricity { get; set; }
+        public bool hasWater { get; set; }
+        public decimal SqMPrice
         {
             get { return Price / SquareMeters; }
         }
-        public string Type { get; set; } //what type of an estate is this
+        public String? Type { get; set; }
+        public bool IsPropertyNewDevelopment { get; set; }
+        public bool isSold { get; set; }
 
-        public bool IsPropertyNewDevelopment { get; set; } //shows if the estate being sold is a newly developed housing unit, or an older existing one
-        public bool IsPropertySold { get; set; } //shows if the property has been sold already 
-
-        //database only properties
-
-        public DateTime CreatedAt { get; set; } //when entry was added to the database
-        public DateTime ModifiedAt { get; set; } //when wwas entry modified in the database
+        //db only
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
     }
 }

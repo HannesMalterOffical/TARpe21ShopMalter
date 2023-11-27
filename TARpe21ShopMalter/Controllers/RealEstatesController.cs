@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Metrics;
-using System.Net;
+using Microsoft.EntityFrameworkCore;
+using TARpe21ShopMalter.ApplicationServices.Services;
+using TARpe21ShopMalter.Core.Domain;
 using TARpe21ShopMalter.Core.Dto;
 using TARpe21ShopMalter.Core.ServiceInterface;
 using TARpe21ShopMalter.Data;
+using TARpe21ShopMalter.Models.File;
 using TARpe21ShopMalter.Models.RealEstate;
 using TARpe21ShopMalter.Models.Spaceship;
 
@@ -11,31 +13,47 @@ namespace TARpe21ShopMalter.Controllers
 {
     public class RealEstatesController : Controller
     {
-        private readonly IRealEstatesServices _realEstates;
+        private readonly IRealEstateServices _realEstates;
         private readonly TARpe21ShopMalterContext _context;
-        public RealEstatesController
-            (
-            IRealEstatesServices realEstates,
-            TARpe21ShopMalterContext context
-            )
+        private readonly IFilesServices _filesServices;
+
+        public RealEstatesController(IRealEstateServices realEstateServices, TARpe21ShopMalterContext context, IFilesServices filesServices)
         {
-            _realEstates = realEstates;
+            _realEstates = realEstateServices;
             _context = context;
+            _filesServices = filesServices;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveImage(FileToApiViewModel vm)
+        {
+            var dto = new FileToApiDto()
+            {
+                Id = vm.ImageId
+            };
+            var image = await _filesServices.RemoveImageFromApi(dto);
+            if (image == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
         [HttpGet]
         public IActionResult Index()
         {
             var result = _context.RealEstates
-                .OrderByDescending(x => x.CreatedAt)
+                .OrderBy(x => x.CreatedAt)
                 .Select(x => new RealEstateIndexViewModel
                 {
                     Id = x.Id,
                     Address = x.Address,
                     City = x.City,
+                    County = x.County,
                     Country = x.Country,
                     SquareMeters = x.SquareMeters,
                     Price = x.Price,
-                    IsPropertySold = x.IsPropertySold,
+                    isSold = x.isSold
                 });
             return View(result);
         }
@@ -54,9 +72,9 @@ namespace TARpe21ShopMalter.Controllers
             {
                 Id = Guid.NewGuid(),
                 Address = vm.Address,
-                City = vm.City,
-                Country = vm.Country,
+                City = vm.City, 
                 County = vm.County,
+                Country = vm.Country,
                 SquareMeters = vm.SquareMeters,
                 Price = vm.Price,
                 PostalCode = vm.PostalCode,
@@ -64,17 +82,16 @@ namespace TARpe21ShopMalter.Controllers
                 FaxNumber = vm.FaxNumber,
                 ListingDescription = vm.ListingDescription,
                 BuildDate = vm.BuildDate,
-                RoomCount = vm.RoomCount,
                 FloorCount = vm.FloorCount,
                 EstateFloor = vm.EstateFloor,
                 Bathrooms = vm.Bathrooms,
                 Bedrooms = vm.Bedrooms,
-                DoesHaveParkingSpace = vm.DoesHaveParkingSpace,
-                DoesHavePowerGridConnection = vm.DoesHavePowerGridConnection,
-                DoesHaveWaterGridConnection = vm.DoesHaveWaterGridConnection,
+                hasElectricity = vm.hasElectricity,
+                hasParkingSpace = vm.hasParkingSpace,
+                hasWater = vm.hasWater,
                 Type = vm.Type,
                 IsPropertyNewDevelopment = vm.IsPropertyNewDevelopment,
-                IsPropertySold = vm.IsPropertySold,
+                isSold = vm.isSold,
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now,
                 Files = vm.Files,
@@ -83,7 +100,7 @@ namespace TARpe21ShopMalter.Controllers
                 {
                     Id = z.ImageId,
                     ExistingFilePath = z.FilePath,
-                    RealEstateId= z.RealEstateId,
+                    RealEstateId = z.RealEstateId,
                 }).ToArray()
             };
             var result = await _realEstates.Create(dto);
@@ -91,8 +108,9 @@ namespace TARpe21ShopMalter.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction("Index", vm);
+            return RedirectToAction(nameof(Index), vm);
         }
+
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
@@ -101,6 +119,15 @@ namespace TARpe21ShopMalter.Controllers
             {
                 return NotFound();
             }
+
+            var images = await _context.FilesToApi
+                .Where(x => x.RealEstateId == id)
+                .Select(y => new FileToApiViewModel
+                {
+                    FilePath = y.ExistingFilePath,
+                    ImageId = y.Id
+                }).ToArrayAsync();
+
             var vm = new RealEstateCreateUpdateViewModel();
 
             vm.Id = realEstate.Id;
@@ -120,14 +147,15 @@ namespace TARpe21ShopMalter.Controllers
             vm.EstateFloor = realEstate.EstateFloor;
             vm.Bathrooms = realEstate.Bathrooms;
             vm.Bedrooms = realEstate.Bedrooms;
-            vm.DoesHaveParkingSpace = realEstate.DoesHaveParkingSpace;
-            vm.DoesHavePowerGridConnection = realEstate.DoesHavePowerGridConnection;
-            vm.DoesHaveWaterGridConnection = realEstate.DoesHaveWaterGridConnection;
+            vm.hasParkingSpace = realEstate.hasParkingSpace;
+            vm.hasElectricity = realEstate.hasElectricity;
+            vm.hasWater = realEstate.hasWater;
             vm.Type = realEstate.Type;
             vm.IsPropertyNewDevelopment = realEstate.IsPropertyNewDevelopment;
-            vm.IsPropertySold = realEstate.IsPropertySold;
+            vm.isSold = realEstate.isSold;
             vm.CreatedAt = DateTime.Now;
             vm.ModifiedAt = DateTime.Now;
+            vm.FileToApiViewModels.AddRange(images);
 
             return View("CreateUpdate", vm);
         }
@@ -153,12 +181,12 @@ namespace TARpe21ShopMalter.Controllers
                 EstateFloor = vm.EstateFloor,
                 Bathrooms = vm.Bathrooms,
                 Bedrooms = vm.Bedrooms,
-                DoesHaveParkingSpace = vm.DoesHaveParkingSpace,
-                DoesHavePowerGridConnection = vm.DoesHavePowerGridConnection,
-                DoesHaveWaterGridConnection = vm.DoesHaveWaterGridConnection,
+                hasParkingSpace = vm.hasParkingSpace,
+                hasElectricity = vm.hasElectricity,
+                hasWater = vm.hasWater,
                 Type = vm.Type,
                 IsPropertyNewDevelopment = vm.IsPropertyNewDevelopment,
-                IsPropertySold = vm.IsPropertySold,
+                isSold = vm.isSold,
                 CreatedAt = vm.CreatedAt,
                 ModifiedAt = DateTime.Now,
                 Files = vm.Files,
@@ -186,7 +214,15 @@ namespace TARpe21ShopMalter.Controllers
                 return NotFound();
             }
 
-            var vm = new RealEstateDetailsViewModel();
+            var images = await _context.FilesToApi
+                .Where(x => x.RealEstateId == id)
+                .Select(y => new FileToApiViewModel
+                {
+                    FilePath = y.ExistingFilePath,
+                    ImageId = y.Id
+                }).ToArrayAsync();
+
+            var vm = new RealEstateDeleteDetailsViewModel();
 
             vm.Id = realEstate.Id;
             vm.Address = realEstate.Address;
@@ -205,14 +241,18 @@ namespace TARpe21ShopMalter.Controllers
             vm.EstateFloor = realEstate.EstateFloor;
             vm.Bathrooms = realEstate.Bathrooms;
             vm.Bedrooms = realEstate.Bedrooms;
-            vm.DoesHaveParkingSpace = realEstate.DoesHaveParkingSpace;
-            vm.DoesHavePowerGridConnection = realEstate.DoesHavePowerGridConnection;
-            vm.DoesHaveWaterGridConnection = realEstate.DoesHaveWaterGridConnection;
+            vm.hasParkingSpace = realEstate.hasParkingSpace;
+            vm.hasElectricity = realEstate.hasElectricity;
+            vm.hasWater = realEstate.hasWater;
             vm.Type = realEstate.Type;
             vm.IsPropertyNewDevelopment = realEstate.IsPropertyNewDevelopment;
-            vm.IsPropertySold = realEstate.IsPropertySold;
+            vm.isSold = realEstate.isSold;
+            vm.CreatedAt = realEstate.CreatedAt;
+            vm.ModifiedAt = realEstate.ModifiedAt;
+            vm.FileToApiViewModels.AddRange(images);
+            vm.isDeleting = false;
 
-            return View(vm);
+            return View("DetailsDelete", vm);
         }
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
@@ -222,8 +262,15 @@ namespace TARpe21ShopMalter.Controllers
             {
                 return NotFound();
             }
+            var images = await _context.FilesToApi
+                .Where(x => x.RealEstateId == id)
+                .Select(y => new FileToApiViewModel
+                {
+                    FilePath = y.ExistingFilePath,
+                    ImageId = y.Id
+                }).ToArrayAsync();
 
-            var vm = new RealEstateDeleteViewModel();
+            var vm = new RealEstateDeleteDetailsViewModel();
 
             vm.Id = realEstate.Id;
             vm.Address = realEstate.Address;
@@ -242,14 +289,16 @@ namespace TARpe21ShopMalter.Controllers
             vm.EstateFloor = realEstate.EstateFloor;
             vm.Bathrooms = realEstate.Bathrooms;
             vm.Bedrooms = realEstate.Bedrooms;
-            vm.DoesHaveParkingSpace = realEstate.DoesHaveParkingSpace;
-            vm.DoesHavePowerGridConnection = realEstate.DoesHavePowerGridConnection;
-            vm.DoesHaveWaterGridConnection = realEstate.DoesHaveWaterGridConnection;
+            vm.hasParkingSpace = realEstate.hasParkingSpace;
+            vm.hasElectricity = realEstate.hasElectricity;
+            vm.hasWater = realEstate.hasWater;
             vm.Type = realEstate.Type;
             vm.IsPropertyNewDevelopment = realEstate.IsPropertyNewDevelopment;
-            vm.IsPropertySold = realEstate.IsPropertySold;
+            vm.isSold = realEstate.isSold;
+            vm.FileToApiViewModels.AddRange(images);
+            vm.isDeleting = true;
 
-            return View(vm);
+            return View("DetailsDelete", vm);
         }
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmation(Guid id)
@@ -262,5 +311,6 @@ namespace TARpe21ShopMalter.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
     }
 }

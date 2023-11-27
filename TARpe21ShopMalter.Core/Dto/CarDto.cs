@@ -1,26 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
-namespace TARpe21ShopMalter.Models.Car
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TARpe21ShopMalter.Core.Domain;
+
+namespace TARpe21ShopMalter.Core.Dto
 {
     public class CarDto
     {
-        public Guid Id { get; set; } // unique id
-        public string bodyType { get; set; } // WHat type of car is it, sedan, SUV ect
-        public string carMake { get; set; } // What make the car is
-        public string bodyColor { get; set; } // Car body color
-        public string steeringWheeleLocation { get; set; } // Where the Steering wheele is located
-        public string Model { get; set; } // model of the car
-        public int madeInYear { get; set; } // year it was made in
-        public int price { get; set; } // what the car costs
-        public int powerkW { get; set; } // engine power in kilow Watts
-        public string fuleType { get; set; } // what type of fuel the car useses
-        public string transmission { get; set; } // what sort of transmission the car has
+        public Guid Id { get; set; }
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public int Year { get; set; }
+        public bool IsUsed { get; set; }
+        public List<IFormFile> Files { get; set; }
+        public IEnumerable<FileToApiDto> FilesToApiDtos { get; set; } = new List<FileToApiDto>(); //files to be added to the api
 
-        public bool IsCarUsed { get; set; } // is the car used or not
-        public bool IsCarSold { get; set; } // is the car sold
-
-        //database only properties
-
-        public DateTime CreatedAt { get; set; } //when entry was added to the database
-        public DateTime ModifiedAt { get; set; } //when wwas entry modified in the database
+        //db only
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace TARpe21ShopMalter.Controllers
             TARpe21ShopMalterContext context,
             ISpaceshipsServices spaceshipsServices,
             IFilesServices filesServices
+            
             )
         {
             _context = context;
@@ -103,9 +104,7 @@ namespace TARpe21ShopMalter.Controllers
                     ImageTitle = y.ImageTitle,
                     Image = string.Format("data:image/gif;base64,{0}", Convert.ToBase64String(y.ImageData))
                 }).ToArrayAsync();
-
             var vm = new SpaceshipCreateUpdateViewModel();
-
             vm.Id = spaceship.Id;
             vm.Name = spaceship.Name;
             vm.Description = spaceship.Description;
@@ -126,7 +125,6 @@ namespace TARpe21ShopMalter.Controllers
             vm.CreatedAt = spaceship.CreatedAt;
             vm.ModifiedAt = spaceship.ModifiedAt;
             vm.Image.AddRange(photos);
-
 
             return View("CreateUpdate", vm);
         }
@@ -216,47 +214,36 @@ namespace TARpe21ShopMalter.Controllers
             return View(vm);
         }
         [HttpGet]
-        public async Task<IActionResult>Delete(Guid id)
+        public async Task<IActionResult>Delete(Guid Id)
         {
-
-            var spaceship = await _spaceshipsServices.GetAsync(id);
+            var spaceship = await _spaceshipsServices.GetAsync(Id);
 
             if (spaceship == null)
             {
                 return NotFound();
             }
-
-            var photos = await _context.FilesToDatabase
-               .Where(x => x.SpaceshipId == id)
-               .Select(y => new ImageViewModel
-               {
-                   SpaceshipId = y.Id,
-                   ImageId = y.Id,
-                   ImageData = y.ImageData,
-                   ImageTitle = y.ImageTitle,
-                   Image = string.Format("data:image/gif;base64,{0}", Convert.ToBase64String(y.ImageData))
-               }).ToArrayAsync();
-            var vm = new SpaceshipDeleteViewModel();
-            vm.Id = spaceship.Id;
-            vm.Name = spaceship.Name;
-            vm.Description = spaceship.Description;
-            vm.PassengerCount = spaceship.PassengerCount;
-            vm.CrewCount = spaceship.CrewCount;
-            vm.CargoWeight = spaceship.CargoWeight;
-            vm.MaxSpeedInVaccuum = spaceship.MaxSpeedInVaccuum;
-            vm.BuiltAtDate = spaceship.BuiltAtDate;
-            vm.MaidenLaunch = spaceship.MaidenLaunch;
-            vm.Manufacturer = spaceship.Manufacturer;
-            vm.IsSpaceshipPreviouslyOwned = spaceship.IsSpaceshipPreviouslyOwned;
-            vm.FullTripsCount = spaceship.FullTripsCount;
-            vm.Type = spaceship.Type;
-            vm.EnginePower = spaceship.EnginePower;
-            vm.FuelConsumptionPerDay = spaceship.FuelConsumptionPerDay;
-            vm.MaintenanceCount = spaceship.MaintenanceCount;
-            vm.LastMaintenance = spaceship.LastMaintenance;
-            vm.CreatedAt = spaceship.CreatedAt;
-            vm.ModifiedAt = spaceship.ModifiedAt;
-            vm.Image.AddRange(photos);
+            var vm = new SpaceshipDeleteViewModel()
+            {
+                Id = spaceship.Id,
+                Name = spaceship.Name,
+                Description = spaceship.Description,
+                PassengerCount = spaceship.PassengerCount,
+                CrewCount = spaceship.CrewCount,
+                CargoWeight = spaceship.CargoWeight,
+                MaxSpeedInVaccuum = spaceship.MaxSpeedInVaccuum,
+                BuiltAtDate = spaceship.BuiltAtDate,
+                MaidenLaunch = spaceship.MaidenLaunch,
+                Manufacturer = spaceship.Manufacturer,
+                IsSpaceshipPreviouslyOwned = spaceship.IsSpaceshipPreviouslyOwned,
+                FullTripsCount = spaceship.FullTripsCount,
+                Type = spaceship.Type,
+                EnginePower = spaceship.EnginePower,
+                FuelConsumptionPerDay = spaceship.FuelConsumptionPerDay,
+                MaintenanceCount = spaceship.MaintenanceCount,
+                LastMaintenance = spaceship.LastMaintenance,
+                CreatedAt = spaceship.CreatedAt,
+                ModifiedAt = spaceship.ModifiedAt
+            };
             return View(vm);
         }
         [HttpPost]
@@ -275,14 +262,17 @@ namespace TARpe21ShopMalter.Controllers
         {
             var dto = new FileToDatabaseDto()
             {
-                Id = file.ImageId
+                Id = file.ImageId,
             };
+
             var image = await _filesServices.RemoveImage(dto);
-            if (image == null)
+            if(image == null)
             {
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Index));
+
         }
+
     }
 }

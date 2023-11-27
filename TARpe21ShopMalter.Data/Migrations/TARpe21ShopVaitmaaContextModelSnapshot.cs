@@ -22,10 +22,44 @@ namespace TARpe21ShopMalter.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("TARpe21ShopMalter.Core.Domain.Car", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cars");
+                });
+
             modelBuilder.Entity("TARpe21ShopMalter.Core.Domain.FileToApi", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CarId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ExistingFilePath")
@@ -36,6 +70,8 @@ namespace TARpe21ShopMalter.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.HasIndex("RealEstateId");
 
@@ -97,28 +133,17 @@ namespace TARpe21ShopMalter.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("DoesHaveParkingSpace")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DoesHavePowerGridConnection")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("DoesHaveWaterGridConnection")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("EstateFloor")
                         .HasColumnType("int");
 
-                    b.Property<int>("FaxNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("FaxNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FloorCount")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsPropertyNewDevelopment")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPropertySold")
                         .HasColumnType("bit");
 
                     b.Property<string>("ListingDescription")
@@ -128,8 +153,9 @@ namespace TARpe21ShopMalter.Data.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PostalCode")
                         .HasColumnType("int");
@@ -144,8 +170,19 @@ namespace TARpe21ShopMalter.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("hasElectricity")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("hasParkingSpace")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("hasWater")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isSold")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -223,9 +260,18 @@ namespace TARpe21ShopMalter.Data.Migrations
 
             modelBuilder.Entity("TARpe21ShopMalter.Core.Domain.FileToApi", b =>
                 {
+                    b.HasOne("TARpe21ShopMalter.Core.Domain.Car", null)
+                        .WithMany("FilesToApi")
+                        .HasForeignKey("CarId");
+
                     b.HasOne("TARpe21ShopMalter.Core.Domain.RealEstate", null)
                         .WithMany("FilesToApi")
                         .HasForeignKey("RealEstateId");
+                });
+
+            modelBuilder.Entity("TARpe21ShopMalter.Core.Domain.Car", b =>
+                {
+                    b.Navigation("FilesToApi");
                 });
 
             modelBuilder.Entity("TARpe21ShopMalter.Core.Domain.RealEstate", b =>

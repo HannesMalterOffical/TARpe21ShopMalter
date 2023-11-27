@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<TARpe21ShopMalter.Models.RealEstate.RealEstateIndexViewModel>
 @{
     int rowNumber = 1;
+    string displayString = "";
 }
 <div class="h1">Estates</div>
 <div>
-    <a asp-action="Create" asp-controller="realEstates" type="submit" class="btn btn-primary">Create</a>
+    <a asp-action="Create" asp-controller="RealEstates" type="submit" class="btn btn-primary">Create</a>
 </div>
 <form method="post">
     <table class="table table-hover">
@@ -15,7 +16,7 @@
                 <th scope="col">Country</th>
                 <th scope="col">Size</th>
                 <th scope="col">Price</th>
-                <th scope="col">Sale Status</th>
+                <th scope="col">Sold?</th>
             </tr>
         </thead>
         <tbody>
@@ -28,19 +29,21 @@
                     <td>@realEstate.SquareMeters</td>
                     <td>@realEstate.Price</td>
                     <td>
-                        @if (realEstate.IsPropertySold)
+                        @if (realEstate.isSold)
                         {
-                            @("SOLD!!!")
+                            @("Sold");
                         }
                         else
                         {
-                            @("Available")
+                            @("Available");
                         }
+                        @(displayString);
+
                     </td>
                     <td>
-                        <a asp-action="details" asp-controller="realEstates" asp-route-id="@realEstate.Id" class="btn btn-info">Details</a>
-                        <a asp-action="Update" asp-controller="realEstates" asp-route-id="@realEstate.Id" class="btn btn-primary">Edit</a>
-                        <a asp-action="delete" asp-controller="realEstates" asp-route-id="@realEstate.Id" type="submit" class="btn btn-danger">Delete</a>
+                        <a asp-action="details" asp-controller="RealEstates" asp-route-id="@realEstate.Id" class="btn btn-info">Details</a>
+                        <a asp-action="Update" asp-controller="RealEstates" asp-route-id="@realEstate.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="delete" asp-controller="RealEstates" asp-route-id="@realEstate.Id" type="submit" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
                 rowNumber++;
