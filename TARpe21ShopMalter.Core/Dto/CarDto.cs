@@ -14,6 +14,7 @@ namespace TARpe21ShopMalter.Core.Dto
         public string Brand { get; set; }
         public string Model { get; set; }
         public int Year { get; set; }
+        public int? Mileage { get; set; }
         public bool IsUsed { get; set; }
         public List<IFormFile> Files { get; set; }
         public IEnumerable<FileToApiDto> FilesToApiDtos { get; set; } = new List<FileToApiDto>(); //files to be added to the api

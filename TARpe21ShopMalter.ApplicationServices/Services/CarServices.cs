@@ -27,6 +27,7 @@ namespace TARpe21ShopMalter.ApplicationServices.Services
             car.Model = dto.Model;
             car.Brand= dto.Brand;
             car.Year= dto.Year;
+            car.Mileage= dto.Mileage;
             car.IsUsed= dto.IsUsed;
             car.CreatedAt= DateTime.Now;
             car.ModifiedAt= DateTime.Now;
@@ -66,6 +67,7 @@ namespace TARpe21ShopMalter.ApplicationServices.Services
             car.Brand = dto.Brand;
             car.Year = dto.Year;
             car.Model= dto.Model;
+            car.Mileage = dto.Mileage;
             car.IsUsed = dto.IsUsed;
             car.CreatedAt = dto.CreatedAt;
             car.ModifiedAt = DateTime.Now;

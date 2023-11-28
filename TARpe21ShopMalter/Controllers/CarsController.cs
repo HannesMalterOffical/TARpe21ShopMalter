@@ -50,6 +50,7 @@ namespace TARpe21ShopMalter.Controllers
                     Brand = x.Brand,
                     Model = x.Model,
                     Year = x.Year,
+                    Mileage = x.Mileage,
                     IsUsed = x.IsUsed 
                 });
             return View(result);
@@ -71,6 +72,7 @@ namespace TARpe21ShopMalter.Controllers
                 Brand = vm.Brand,
                 Model = vm.Model,
                 Year = vm.Year,
+                Mileage = vm.Mileage,
                 IsUsed = vm.IsUsed,
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now,
@@ -115,6 +117,7 @@ namespace TARpe21ShopMalter.Controllers
             vm.Brand = car.Brand;
             vm.Model = car.Model;
             vm.Year = car.Year;
+            vm.Mileage = car.Mileage;
             vm.IsUsed = car.IsUsed;
             vm.FileToApiViewModels.AddRange(images);
 
@@ -129,6 +132,7 @@ namespace TARpe21ShopMalter.Controllers
                 Brand = vm.Brand,
                 Model = vm.Model,
                 Year = vm.Year,
+                Mileage = vm.Mileage,
                 IsUsed = vm.IsUsed,
                 Files = vm.Files,
                 FilesToApiDtos = vm.FileToApiViewModels
@@ -170,6 +174,7 @@ namespace TARpe21ShopMalter.Controllers
             vm.Brand = car.Brand;
             vm.Model = car.Model;
             vm.Year = car.Year;
+            vm.Mileage = car.Mileage;
             vm.IsUsed = car.IsUsed;
             vm.CreatedAt = car.CreatedAt;
             vm.ModifiedAt = car.ModifiedAt;
@@ -202,6 +207,7 @@ namespace TARpe21ShopMalter.Controllers
             vm.Brand = car.Brand;
             vm.Model = car.Model;
             vm.Year = car.Year;
+            vm.Mileage = car.Mileage;
             vm.IsUsed = car.IsUsed;
             vm.CreatedAt = car.CreatedAt;
             vm.ModifiedAt = car.ModifiedAt;

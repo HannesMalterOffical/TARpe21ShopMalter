@@ -10,6 +10,7 @@ namespace TARpe21ShopMalter.Models.Car
         public string Brand { get; set; }
         public string Model { get; set; }
         public int Year { get; set; }
+        public int? Mileage { get; set; }
         public bool IsUsed { get; set; }
         public List<IFormFile> Files { get; set; }
         public List<FileToApiViewModel> FileToApiViewModels { get; set; } = new List<FileToApiViewModel>();
