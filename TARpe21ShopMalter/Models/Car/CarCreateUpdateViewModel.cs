@@ -10,6 +10,7 @@ namespace TARpe21ShopMalter.Models.Car
         public Guid? Id { get; set; }
         public string Brand { get; set; }
         public List<SelectListItem> BrandOptions { get; set; } = new List<SelectListItem>() {
+        new SelectListItem { Text = "", Value = "" },
         new SelectListItem { Text = "Toyota", Value = "Toyota" },
         new SelectListItem { Text = "Honda", Value = "Honda" },
         new SelectListItem { Text = "Ford", Value = "Ford" },
