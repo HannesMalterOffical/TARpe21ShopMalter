@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TARpe21ShopMalter.Core", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TARpe21ShopMalter.ApplicationServices", "TARpe21ShopMalter.ApplicationServices\TARpe21ShopMalter.ApplicationServices.csproj", "{EA2914A0-3251-4324-86F8-25009002B867}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TARpe21ShopMalter.SpaceshipTest", "TARpe21ShopMalter.SpaceshipTest\TARpe21ShopMalter.SpaceshipTest.csproj", "{DB63362D-23B7-4DDE-B336-207B88B07718}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EA2914A0-3251-4324-86F8-25009002B867}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA2914A0-3251-4324-86F8-25009002B867}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA2914A0-3251-4324-86F8-25009002B867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB63362D-23B7-4DDE-B336-207B88B07718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB63362D-23B7-4DDE-B336-207B88B07718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB63362D-23B7-4DDE-B336-207B88B07718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB63362D-23B7-4DDE-B336-207B88B07718}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
