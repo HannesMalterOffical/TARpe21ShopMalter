@@ -1,0 +1,54 @@
+﻿@model TARpe21ShopMalter.Models.OpenWeather.OpenWeatherViewModel
+
+<h1 class="text-center mb-4">City Weather</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Forecast for @Model.City</h3>
+
+        <div class="row">
+            <div class="col-md-4">
+                <strong>Timezone</strong>
+                <p>@Model.Timezone</p>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Temperature</strong>
+                <p>@Model.Temperature</p>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Air Pressure</strong>
+                <p>@Model.Pressure</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <strong>Humidity</strong>
+                <p>@Model.Humidity%</p>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Conditions</strong>
+                <p>@Model.Main - @Model.Description</p>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Wind Speed</strong>
+                <p>@Model.Speed</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" asp-action="ShowWeather" asp-controller="OpenWeather">
+    <div class="form-group col-md-offset-7 col-md-7">
+        <h2>Look up the weather info of a city!</h2>
+    </div>
+    <br />
+    <div class="container">
+        <input type="text" name="City" value="" />
+        <input type="submit" class="btn btn-primary" value="Look up" />
+    </div>
+</form>
