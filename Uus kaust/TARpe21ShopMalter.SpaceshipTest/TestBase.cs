@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using TARpe21ShopMalter.ApplicationServices.Services;
 using TARpe21ShopMalter.Core.ServiceInterface;
 using TARpe21ShopMalter.Data;
-using TARpe21ShopMalter.SpaceshipTest.Macros;
 using Microsoft.Extensions.Hosting;
 using TARpe21ShopMalter.SpaceshipTest.Mock;
 using TARpe21ShopVaitmaa.SpaceshipTest.Macros;
